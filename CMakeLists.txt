@@ -1,13 +1,21 @@
 cmake_minimum_required(VERSION 3.14)
 project(hw1 LANGUAGES C CXX)
 
+list(APPEND CMAKE_PREFIX_PATH
+    "/share/home/cjd/apps/OpenBLAS"
+)
+set(BLA_VENDOR OpenBLAS)
 find_package(BLAS REQUIRED)
+if(BLAS_FOUND)
+    include_directories(/share/home/cjd/apps/OpenBLAS/include/)
+endif(BLAS_FOUND)
 
 # Run the full set of tests
 option(ALL_SIZES "Test an extended set of sizes; will take more CPU time." OFF)
 
 # On Perlmutter -- 3.5 GHz * 4 vector width * 2 vector pipelines * 2 flops for FMA = 56 GF/s
-set(MAX_SPEED 56 CACHE STRING "The max speed of the CPU in GF/s")
+# On Zhongwei -- 3.4 GHz * 8 vector width * 2 vector pipelines * 2 flops for FMA = 108.8 GF/s
+set(MAX_SPEED 108.8 CACHE STRING "The max speed of the CPU in GF/s")
 
 # Group number
 set(GROUP_NO 00 CACHE STRING "Your group number (two digits)")
